@@ -1,0 +1,6 @@
+$ErrorActionPreference = "SilentlyContinue"
+[string]$path1 = Read-Host "Specify path for processing"
+[string]$toconvert = Read-host "Specify the symbol you want to convert"
+[string]$convertto = read-host "What do you want to change this symbol to?"
+Set-Location -path '$path1'
+Dir -recurse | Rename-Item -NewName { $_.Name -replace $toconvert,$convertto }
