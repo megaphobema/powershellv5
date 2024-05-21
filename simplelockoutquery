@@ -1,0 +1,27 @@
+function Find-Lockout{
+  param(
+    [string]$targetUser
+  )
+
+  $controllers = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().DomainControllers.name
+  $rFilter = "(?<=Client Address:\s*::ffff:)(\d*.\d*.\d*.\d*)"
+  $results = $null
+
+  $xPath = " *[EventData[Data[@Name='TargetUserName'] and (Data='" + $targetUser + "')]]"
+
+  $results = foreach ($dc in $controllers){
+    Get-WinEvent -computername $dc -FilterXPath $xPath
+  }
+
+  [array]$ipaddy =- " "
+
+  foreach ($pop in $results){
+    $get = ([regex]$rFilter).match($pop.message).value
+    if ($get -ne ""){
+        # $get
+        $ipaddy = $get
+    }
+  }
+
+$ipAddy
+}
