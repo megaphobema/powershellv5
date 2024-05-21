@@ -1,0 +1,4 @@
+$query1 = Read-Host ('Who are you looking up?')
+
+
+get-addomaincontroller -filter * | select -expand name | sort | foreach-object { $DC = $_; get-aduser $query1 -properties lastlogon -server $_ | Select Name, @{n='LastLogon';e={w32tm /ntte $_.lastlogon}}, @{n='DC';e={$DC}}} | Sort-Object -property lastlogon -Descending
