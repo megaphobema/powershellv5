@@ -1,3 +1,5 @@
+# This will query all readable domain controllers to display the lastlogon attribute of a user.
+
 $query1 = Read-Host ('Who are you looking up?')
 
 
